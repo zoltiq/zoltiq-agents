@@ -1,0 +1,5 @@
+{
+    "require": {
+        "josephopanel/solana-php-sdk": "^2.0"
+    }
+}

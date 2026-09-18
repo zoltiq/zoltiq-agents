@@ -1,0 +1,91 @@
+<?php
+
+namespace Zoltiq\Agents\Includes\Abilities\AdminMenu;
+
+use Zoltiq\Agents\Includes\Abilities\Ability_Definition;
+
+defined( 'ABSPATH' ) || exit;
+
+class Get_Admin_Menu_Context extends Ability_Definition {
+
+	protected function ability(): array {
+		return array(
+			'name' => 'zoltiq/get-admin-menu-context',
+			'args' => array(
+				'label'               => __( 'Get Admin Menu Context', 'zoltiq-agents' ),
+				'description'         => __( 'Return the current WP-admin screen context: base, id, post_type, top-level menu slug (if resolvable via $_GET[page]), current caller\'s roles, and admin URL. Reads get_current_screen() when available; falls back to sanitized $_GET data otherwise.', 'zoltiq-agents' ),
+				'category'            => 'zoltiq-agents-admin-menu',
+				'execute_callback'    => array( $this, 'execute' ),
+				'permission_callback' => static function (): bool {
+					return current_user_can( 'manage_options' );
+				},
+				'input_schema'        => array(
+					'type'                 => 'object',
+					'properties'           => new \stdClass(),
+					'additionalProperties' => false,
+				),
+				'output_schema'       => array(
+					'type'                 => 'object',
+					'properties'           => array(
+						'success'        => array( 'type' => 'boolean' ),
+						'screen_id'      => array( 'type' => 'string' ),
+						'screen_base'    => array( 'type' => 'string' ),
+						'post_type'      => array( 'type' => 'string' ),
+						'page_slug'      => array( 'type' => 'string' ),
+						'admin_base_url' => array( 'type' => 'string' ),
+						'user_roles'     => array( 'type' => 'array' ),
+						'message'        => array( 'type' => 'string' ),
+					),
+					'required'             => array( 'success' ),
+					'additionalProperties' => false,
+				),
+				'meta'                => array(
+					'show_in_rest' => true,
+					'mcp'          => array(
+						'public' => false,
+						'type'   => 'tool',
+					),
+					'annotations'  => array(
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
+			),
+		);
+	}
+
+
+	public function execute( array $input = array() ): array {
+		unset( $input );
+
+		$screen_id   = '';
+		$screen_base = '';
+		$post_type   = '';
+		if ( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if ( $screen instanceof \WP_Screen ) {
+				$screen_id   = (string) $screen->id;
+				$screen_base = (string) $screen->base;
+				$post_type   = (string) $screen->post_type;
+			}
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$page_slug = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+
+		$user = wp_get_current_user();
+		$roles = $user instanceof \WP_User ? array_values( array_map( 'strval', (array) $user->roles ) ) : array();
+
+		return array(
+			'success'        => true,
+			'screen_id'      => $screen_id,
+			'screen_base'    => $screen_base,
+			'post_type'      => $post_type,
+			'page_slug'      => $page_slug,
+			'admin_base_url' => admin_url(),
+			'user_roles'     => $roles,
+			'message'        => __( 'Admin menu context snapshot.', 'zoltiq-agents' ),
+		);
+	}
+}

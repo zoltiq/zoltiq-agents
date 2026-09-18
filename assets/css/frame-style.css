@@ -1,0 +1,82 @@
+:root {
+   --chat-primary-color: #05b6fb;
+   --chat-hover-button-color: #3bc4f9;
+   --chat-text-secondary-color: #f2f2f2;
+	--chat-width-narrow: 420px;
+	--chat-height-narrow: 70vh;
+	--chat-border-radius: 0.75rem;
+   --chat-toggler-right-margin: 35px;
+   --chat-toggler-bottom-margin: 30px;
+   --chat-toggler-size: 50px;
+   --chat-toggler-border-radius: 50%;
+}
+
+
+#chatbotFrame {
+	width: var(--chat-width-narrow); 
+	height: var(--chat-height-narrow); 
+	border-radius: var(--chat-border-radius);
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
+   border: none;
+}
+
+#chatbotFrame {
+	@media (max-width: 768px) {
+   	height: 100%;
+   	width: 100%;
+    	top: 0 !important;
+   	bottom: 0 !important;
+   	right: 0 !important;
+   	left: 0 !important;
+	   border-radius: 0;
+	}
+}
+				
+#chatbot-toggler {
+	background: var(--chat-primary-color); 
+   bottom: var(--chat-toggler-bottom-margin);
+	right: var(--chat-toggler-right-margin);
+	height: var(--chat-toggler-size);
+	width: var(--chat-toggler-size);
+	border-radius: var(--chat-toggler-border-radius);   
+	position: fixed;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	z-index: 200;
+}
+
+#chatbot-toggler:hover {
+	background: var(--chat-hover-button-color); 
+}
+				
+#chatbot-toggler > span {
+	color: var(--chat-text-secondary-color);
+	position: absolute;
+   display: inline-flex;       /* zachowuje span jako element liniowy, ale włącza flex */
+   align-items: center;        /* pionowe wyśrodkowanie SVG */
+   justify-content: center;    /* poziome wyśrodkowanie SVG */
+   vertical-align: middle;     /* wyrównanie względem linii tekstu (opcjonalne) */
+}
+				
+#chatbot-toggler.show-chatbot {
+	transform: rotate(90deg);
+}
+			
+#chatbot-toggler.show-chatbot span:first-child,
+#chatbot-toggler span:last-child {
+	opacity: 0;
+}
+			
+#chatbot-toggler.show-chatbot span:last-child {
+	opacity: 1;
+}
+
+#chatbot-toggler.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+

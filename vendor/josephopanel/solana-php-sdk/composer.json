@@ -1,0 +1,30 @@
+{
+    "name": "josephopanel/solana-php-sdk",
+    "description": "A PHP SDK for interacting with the Solana blockchain via JSON RPC and WebSocket methods.",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
+        "ratchet/pawl": "^0.4.1",
+        "stephenhill/base58": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "JosephOpanel\\SolanaSDK\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Joseph Opanel",
+            "email": "opanelj@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/jopanel/solana-php-sdk",
+    "keywords": ["solana", "blockchain", "php-sdk", "web3", "json-rpc"],
+    "minimum-stability": "stable",
+    "version": "2.0.6"
+}
