@@ -1,8 +1,4 @@
 
-**Zoltiq Agents is an AI agent platform for WordPress.**
-Create AI agents that can understand requests, use WordPress tools,
-access website knowledge and perform tasks.
-
 [![WordPress](https://img.shields.io/badge/WordPress-Plugin-21759B.svg)](https://wordpress.org/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
 
